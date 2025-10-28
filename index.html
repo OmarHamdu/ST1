@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متابعة مواد السنة الأولى - حاسبات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --info: #4895ef;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .date-time {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .auto-update-info {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            background: white;
+            color: var(--primary);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .nav-btn i {
+            font-size: 1.1rem;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .subject-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .subject-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .subject-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .subject-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .lectures-count {
+            background-color: var(--light);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .new-lecture-badge {
+            background: var(--warning);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            position: relative;
+        }
+        
+        .progress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .back-btn {
+            background-color: white;
+            color: var(--dark);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .subject-detail-header {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .subject-detail-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background: white;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .tab.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .content-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .item-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-card.completed {
+            border-left-color: var(--success);
+            opacity: 0.8;
+        }
+        
+        .item-card.new-item {
+            border-left-color: var(--warning);
+            animation: highlight 2s ease;
+        }
+        
+        @keyframes highlight {
+            0% { background: rgba(247, 37, 133, 0.1); }
+            100% { background: var(--light); }
+        }
+        
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .item-card.completed .item-icon {
+            background: var(--success);
+        }
+        
+        .item-card.new-item .item-icon {
+            background: var(--warning);
+        }
+        
+        .item-text {
+            font-weight: 600;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-complete {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-complete:hover {
+            background: #3aa8d0;
+            transform: scale(1.05);
+        }
+        
+        .btn-delete {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #e01a6f;
+            transform: scale(1.05);
+        }
+        
+        .completed .item-text {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: var(--hover-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-right: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-right: 4px solid var(--warning);
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification i {
+            font-size: 1.5rem;
+        }
+        
+        .notification.success i {
+            color: var(--success);
+        }
+        
+        .notification.error i {
+            color: var(--warning);
+        }
+        
+        .close-notification {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .items-list {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>متابعة مواد السنة الأولى</h1>
+                <div class="subtitle">كلية الحاسبات والمعلومات</div>
+                <div class="date-time" id="currentDateTime"></div>
+                <div class="auto-update-info" id="autoUpdateInfo">
+                    <i class="fas fa-robot"></i>
+                    <span>التحديث التلقائي مفعل - سيتم إضافة المحاضرات والسكاشن الجديدة تلقائياً</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                الصفحة الرئيسية
+            </button>
+        </div>
+        
+        <!-- الصفحة الرئيسية -->
+        <div class="page active" id="homePage">
+            <div class="subjects-grid" id="subjectsContainer">
+                <!-- سيتم تعبئة المواد هنا باستخدام JavaScript -->
+            </div>
+        </div>
+        
+        <!-- صفحة المادة -->
+        <div class="page" id="subjectPage">
+            <button class="back-btn" id="backFromSubject">
+                <i class="fas fa-arrow-right"></i>
+                العودة للرئيسية
+            </button>
+            <div id="subjectContent">
+                <!-- سيتم تعبئة محتوى المادة هنا -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>تم التطوير خصيصاً لمتابعة مواد السنة الأولى بكلية الحاسبات والمعلومات</p>
+            <p>جميع الحقوق محفوظة &copy; 2023</p>
+        </footer>
+    </div>
+
+    <!-- عنصر الإشعارات -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationText">تمت العملية بنجاح</span>
+        </div>
+        <button class="close-notification" id="closeNotification">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script>
+        // بيانات المواد
+        let subjects = [
+            {
+                id: 'math0',
+                name: 'Mathematics 0',
+                lectures: 10, // تم تصحيحها إلى 10
+                sections: 4,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: true,
+                hasSections: true,
+                icon: 'fas fa-calculator',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            },
+            {
+                id: 'math1',
+                name: 'Mathematics 1',
+                lectures: 10, // تم تصحيحها إلى 10
+                sections: 4,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: true,
+                hasSections: true,
+                icon: 'fas fa-square-root-alt',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            },
+            {
+                id: 'electronics',
+                name: 'Electronics',
+                lectures: 10, // تم تصحيحها إلى 10
+                sections: 4,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: true,
+                hasSections: true,
+                icon: 'fas fa-bolt',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            },
+            {
+                id: 'discrete',
+                name: 'Discrete Mathematics',
+                lectures: 9,
+                sections: 4,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: true,
+                hasSections: true,
+                icon: 'fas fa-project-diagram',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            },
+            {
+                id: 'intro',
+                name: 'Introduction to Computer',
+                lectures: 9,
+                sections: 4,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: true,
+                hasSections: true,
+                icon: 'fas fa-laptop-code',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            },
+            {
+                id: 'human',
+                name: 'Human Rights',
+                lectures: 8,
+                sections: 0,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: false,
+                hasSections: false,
+                icon: 'fas fa-balance-scale',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            },
+            {
+                id: 'technical',
+                name: 'Technical Report',
+                lectures: 7,
+                sections: 0,
+                completedLectures: 0,
+                completedSections: 0,
+                autoIncrement: false,
+                hasSections: false,
+                icon: 'fas fa-file-alt',
+                lastLectureUpdate: null,
+                lastSectionUpdate: null
+            }
+        ];
+
+        // المتغيرات العامة
+        let currentSubjectId = null;
+        let lastAutoUpdateDate = null;
+
+        // تحميل البيانات من localStorage إذا كانت موجودة
+        function loadData() {
+            const savedData = localStorage.getItem('subjectsData');
+            const savedUpdateDate = localStorage.getItem('lastAutoUpdateDate');
+            
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                // دمج البيانات المحفوظة مع الهيكل الأساسي
+                subjects = subjects.map(subject => {
+                    const savedSubject = parsedData.find(s => s.id === subject.id);
+                    return savedSubject ? {...subject, ...savedSubject} : subject;
+                });
+            }
+            
+            if (savedUpdateDate) {
+                lastAutoUpdateDate = savedUpdateDate;
+            }
+        }
+
+        // حفظ البيانات في localStorage
+        function saveData() {
+            localStorage.setItem('subjectsData', JSON.stringify(subjects));
+            if (lastAutoUpdateDate) {
+                localStorage.setItem('lastAutoUpdateDate', lastAutoUpdateDate);
+            }
+        }
+
+        // عرض الإشعار
+        function showNotification(message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(isSuccess ? 'success' : 'error');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // إغلاق الإشعار
+        document.getElementById('closeNotification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        // تحديث التاريخ والوقت المصري
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Africa/Cairo',
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const formatter = new Intl.DateTimeFormat('ar-EG', options);
+            document.getElementById('currentDateTime').textContent = formatter.format(now);
+            
+            return now;
+        }
+
+        // التحقق من التحديث التلقائي للمحاضرات
+        function checkAutoLectureUpdate() {
+            const today = new Date();
+            const todayString = today.toDateString();
+            
+            // إذا تم التحديث اليوم مسبقاً، لا تقم بأي شيء
+            if (lastAutoUpdateDate === todayString) {
+                return;
+            }
+            
+            const dayOfWeek = today.getDay(); // 0 = الأحد, 1 = الإثنين, ..., 6 = السبت
+            let updatedSubjects = [];
+            
+            subjects.forEach(subject => {
+                if (!subject.autoIncrement) return;
+                
+                let shouldUpdate = false;
+                
+                // السبت والثلاثاء (6 و2) - Mathematics 0, Mathematics 1, Electronics
+                if ((dayOfWeek === 6 || dayOfWeek === 2) && 
+                    (subject.id === 'math0' || subject.id === 'math1' || subject.id === 'electronics')) {
+                    shouldUpdate = true;
+                }
+                
+                // الأحد والأربعاء (0 و3) - Discrete Mathematics, Introduction to Computer
+                if ((dayOfWeek === 0 || dayOfWeek === 3) && 
+                    (subject.id === 'discrete' || subject.id === 'intro')) {
+                    shouldUpdate = true;
+                }
+                
+                if (shouldUpdate) {
+                    subject.lectures++;
+                    subject.lastLectureUpdate = todayString;
+                    updatedSubjects.push(subject.name);
+                }
+            });
+            
+            if (updatedSubjects.length > 0) {
+                lastAutoUpdateDate = todayString;
+                saveData();
+                showNotification(`تمت إضافة محاضرة تلقائية في: ${updatedSubjects.join('، ')}`);
+                renderSubjects();
+            }
+        }
+
+        // التحقق من التحديث التلقائي للسكاشن
+        function checkAutoSectionUpdate() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 5 = الجمعة
+            const todayString = today.toDateString();
+            
+            if (dayOfWeek === 5) {
+                let updatedSubjects = [];
+                
+                subjects.forEach(subject => {
+                    if (subject.hasSections && subject.lastSectionUpdate !== todayString) {
+                        subject.sections++;
+                        subject.lastSectionUpdate = todayString;
+                        updatedSubjects.push(subject.name);
+                    }
+                });
+                
+                if (updatedSubjects.length > 0) {
+                    saveData();
+                    showNotification(`تمت إضافة سكشن تلقائي في: ${updatedSubjects.join('، ')}`);
+                    renderSubjects();
+                }
+            }
+        }
+
+        // حساب التقدم لكل مادة
+        function calculateProgress(subject, type) {
+            if (type === 'lectures') {
+                return (subject.completedLectures / subject.lectures) * 100;
+            } else if (type === 'sections') {
+                return subject.sections > 0 ? (subject.completedSections / subject.sections) * 100 : 0;
+            }
+            return 0;
+        }
+
+        // عرض المواد في الصفحة الرئيسية
+        function renderSubjects() {
+            const container = document.getElementById('subjectsContainer');
+            container.innerHTML = '';
+            
+            const todayString = new Date().toDateString();
+            
+            subjects.forEach(subject => {
+                const progress = calculateProgress(subject, 'lectures');
+                const isNewToday = subject.lastLectureUpdate === todayString;
+                
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.setAttribute('data-id', subject.id);
+                
+                subjectCard.innerHTML = `
+                    <div class="subject-header">
+                        <div>
+                            <div class="subject-title">
+                                ${isNewToday ? '<span class="new-lecture-badge">جديد</span>' : ''}
+                                ${subject.name}
+                            </div>
+                            <div class="lectures-count">${subject.lectures} محاضرة ${subject.hasSections ? `| ${subject.sections} سكشن` : ''}</div>
+                        </div>
+                        <div class="subject-icon">
+                            <i class="${subject.icon}"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>${subject.completedLectures} مكتملة</span>
+                            <span>${Math.round(progress)}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(subjectCard);
+            });
+            
+            // إضافة مستمعي الأحداث لبطاقات المواد
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const subjectId = this.getAttribute('data-id');
+                    showSubjectPage(subjectId);
+                });
+            });
+        }
+
+        // عرض صفحة المادة
+        function showSubjectPage(subjectId) {
+            const subject = subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            currentSubjectId = subjectId;
+            
+            // إخفاء الصفحة الرئيسية وإظهار صفحة المادة
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('subjectPage').classList.add('active');
+            
+            const subjectContent = document.getElementById('subjectContent');
+            const todayString = new Date().toDateString();
+            const isNewLectureToday = subject.lastLectureUpdate === todayString;
+            const isNewSectionToday = subject.lastSectionUpdate === todayString;
+            
+            let tabsHtml = `
+                <div class="subject-detail-header">
+                    <div class="subject-detail-title">
+                        ${isNewLectureToday ? '<span class="new-lecture-badge">محاضرة جديدة</span>' : ''}
+                        ${subject.name}
+                    </div>
+                    <div class="subject-icon">
+                        <i class="${subject.icon}"></i>
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="lectures">
+                        <i class="fas fa-book-open"></i>
+                        المحاضرات
+                    </div>
+            `;
+            
+            if (subject.hasSections) {
+                tabsHtml += `
+                    <div class="tab" data-tab="sections">
+                        <i class="fas fa-users"></i>
+                        السكاشن
+                        ${isNewSectionToday ? '<span class="new-lecture-badge">جديد</span>' : ''}
+                    </div>
+                `;
+            }
+            
+            tabsHtml += `</div>`;
+            
+            let contentHtml = `
+                ${tabsHtml}
+                
+                <div class="tab-content active" id="lecturesTab">
+                    <div class="content-card">
+                        <div class="content-header">
+                            <div class="content-title">محاضرات ${subject.name}</div>
+                            <div class="lectures-count">${subject.lectures} محاضرة | ${subject.completedLectures} مكتملة</div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-info">
+                                <span>التقدم في المادة</span>
+                                <span>${Math.round(calculateProgress(subject, 'lectures'))}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${calculateProgress(subject, 'lectures')}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="items-list">
+                            ${generateLecturesList(subject)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (subject.hasSections) {
+                contentHtml += `
+                    <div class="tab-content" id="sectionsTab">
+                        <div class="content-card">
+                            <div class="content-header">
+                                <div class="content-title">سكاشن ${subject.name}</div>
+                                <div class="lectures-count">${subject.sections} سكشن | ${subject.completedSections} مكتمل</div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-info">
+                                    <span>التقدم في السكاشن</span>
+                                    <span>${Math.round(calculateProgress(subject, 'sections'))}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: ${calculateProgress(subject, 'sections')}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="items-list">
+                                ${generateSectionsList(subject)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            subjectContent.innerHTML = contentHtml;
+            
+            // إضافة مستمعي الأحداث للألسنة
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // إزالة النشاط من جميع الألسنة والمحتويات
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // إضافة النشاط للسان والمحتوى المحدد
+                    this.classList.add('active');
+                    document.getElementById(`${tabName}Tab`).classList.add('active');
+                });
+            });
+            
+            // إضافة مستمعي الأحداث لأزرار المحاضرات والسكاشن
+            addItemEventListeners();
+        }
+
+        // إنشاء قائمة المحاضرات
+        function generateLecturesList(subject) {
+            if (subject.lectures === 0) {
+                return `
+                    <div class="empty-state">
+                        <i class="fas fa-book"></i>
+                        <p>لا توجد محاضرات مضافة بعد</p>
+                    </div>
+                `;
+            }
+            
+            const todayString = new Date().toDateString();
+            const isNewToday = subject.lastLectureUpdate === todayString;
+            
+            let html = '';
+            for (let i = 1; i <= subject.lectures; i++) {
+                const isCompleted = i <= subject.completedLectures;
+                const isNew = isNewToday && i === subject.lectures;
+                
+                html += `
+                    <div class="item-card ${isCompleted ? 'completed' : ''} ${isNew ? 'new-item' : ''}">
+                        <div class="item-info">
+                            <div class="item-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="item-text">محاضرة ${i}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-complete" data-type="lecture" data-num="${i}">
+                                <i class="fas ${isCompleted ? 'fa-undo' : 'fa-check'}"></i>
+                                ${isCompleted ? 'إلغاء' : 'إكمال'}
+                            </button>
+                            <button class="btn btn-delete" data-type="lecture" data-num="${i}">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            return html;
+        }
+
+        // إنشاء قائمة السكاشن
+        function generateSectionsList(subject) {
+            if (subject.sections === 0) {
+                return `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <p>لا توجد سكاشن مضافة بعد</p>
+                    </div>
+                `;
+            }
+            
+            const todayString = new Date().toDateString();
+            const isNewToday = subject.lastSectionUpdate === todayString;
+            
+            let html = '';
+            for (let i = 1; i <= subject.sections; i++) {
+                const isCompleted = i <= subject.completedSections;
+                const isNew = isNewToday && i === subject.sections;
+                
+                html += `
+                    <div class="item-card ${isCompleted ? 'completed' : ''} ${isNew ? 'new-item' : ''}">
+                        <div class="item-info">
+                            <div class="item-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="item-text">سكشن ${i}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-complete" data-type="section" data-num="${i}">
+                                <i class="fas ${isCompleted ? 'fa-undo' : 'fa-check'}"></i>
+                                ${isCompleted ? 'إلغاء' : 'إكمال'}
+                            </button>
+                            <button class="btn btn-delete" data-type="section" data-num="${i}">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            return html;
+        }
+
+        // إضافة مستمعي الأحداث للمحاضرات والسكاشن
+        function addItemEventListeners() {
+            // أزرار إكمال المحاضرة/السكشن
+            document.querySelectorAll('.btn-complete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    const num = parseInt(this.getAttribute('data-num'));
+                    toggleItemCompletion(type, num);
+                });
+            });
+            
+            // أزرار حذف المحاضرة/السكشن
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    const num = parseInt(this.getAttribute('data-num'));
+                    deleteItem(type, num);
+                });
+            });
+        }
+
+        // تبديل حالة إكمال المحاضرة/السكشن
+        function toggleItemCompletion(type, num) {
+            const subject = subjects.find(s => s.id === currentSubjectId);
+            if (!subject) return;
+            
+            if (type === 'lecture') {
+                if (num <= subject.completedLectures) {
+                    // إلغاء الإكمال
+                    subject.completedLectures = num - 1;
+                    showNotification(`تم إلغاء إكمال المحاضرة ${num} في ${subject.name}`);
+                } else {
+                    // تعيين كمكتملة
+                    subject.completedLectures = num;
+                    showNotification(`تم إكمال المحاضرة ${num} في ${subject.name}`);
+                }
+            } else if (type === 'section') {
+                if (num <= subject.completedSections) {
+                    // إلغاء الإكمال
+                    subject.completedSections = num - 1;
+                    showNotification(`تم إلغاء إكمال السكشن ${num} في ${subject.name}`);
+                } else {
+                    // تعيين كمكتمل
+                    subject.completedSections = num;
+                    showNotification(`تم إكمال السكشن ${num} في ${subject.name}`);
+                }
+            }
+            
+            saveData();
+            showSubjectPage(currentSubjectId); // إعادة تحميل صفحة المادة
+        }
+
+        // حذف محاضرة/سكشن
+        function deleteItem(type, num) {
+            const subject = subjects.find(s => s.id === currentSubjectId);
+            if (!subject) return;
+            
+            if (type === 'lecture') {
+                if (num === subject.lectures) {
+                    subject.lectures--;
+                    if (subject.completedLectures > subject.lectures) {
+                        subject.completedLectures = subject.lectures;
+                    }
+                    showNotification(`تم حذف المحاضرة ${num} من ${subject.name}`);
+                }
+            } else if (type === 'section') {
+                if (num === subject.sections) {
+                    subject.sections--;
+                    if (subject.completedSections > subject.sections) {
+                        subject.completedSections = subject.sections;
+                    }
+                    showNotification(`تم حذف السكشن ${num} من ${subject.name}`);
+                }
+            }
+            
+            saveData();
+            showSubjectPage(currentSubjectId); // إعادة تحميل صفحة المادة
+        }
+
+        // العودة للصفحة الرئيسية
+        function goToHomePage() {
+            document.getElementById('subjectPage').classList.remove('active');
+            document.getElementById('homePage').classList.add('active');
+            currentSubjectId = null;
+        }
+
+        // تهيئة التطبيق
+        function init() {
+            loadData();
+            const now = updateDateTime();
+            checkAutoLectureUpdate();
+            checkAutoSectionUpdate();
+            renderSubjects();
+            
+            // تحديث الوقت كل ثانية والتحقق من التحديث التلقائي كل دقيقة
+            setInterval(() => {
+                updateDateTime();
+            }, 1000);
+            
+            setInterval(() => {
+                checkAutoLectureUpdate();
+                checkAutoSectionUpdate();
+            }, 60000); // التحقق كل دقيقة
+            
+            // إضافة مستمعي الأحداث للأزرار الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', goToHomePage);
+            document.getElementById('backFromSubject').addEventListener('click', goToHomePage);
+        }
+
+        // بدء التطبيق
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
